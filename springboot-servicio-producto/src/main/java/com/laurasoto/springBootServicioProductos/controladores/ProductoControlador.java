@@ -39,6 +39,12 @@ public class ProductoControlador {
 		Producto producto = iproductoServicio.findById(id);
 		//producto.setPort(Integer.parseInt(env.getProperty("local.server.port")));
 		producto.setPort(port);
+		//timeout de 2 segundos
+		/*try {
+			Thread.sleep(3000L);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}*/
 		return producto;
 	}
 }
