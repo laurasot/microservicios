@@ -3,17 +3,17 @@ package com.laurasoto.springboot.app.item.springbootservicioitem.controladores;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Item;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Producto;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.servicio.ItemServicio;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class ItemControlador {
+    @Autowired
+    private CircuitBreakerFactory cbFactory;
     @Autowired
     @Qualifier("serviceFeign")
     private ItemServicio itemServicio;
@@ -21,14 +21,18 @@ public class ItemControlador {
     @Qualifier("servicioRestTemplate")
     private ItemServicio itemServicio;*/
     @GetMapping("/listar")
-    public List<Item> listar(){
+    public List<Item> listar(@RequestParam (name = "nombre", required= false) String nombre,
+                             @RequestHeader(name = "token-request", required= false) String token){
+        System.out.println(nombre);
+        System.out.println(token);
         return itemServicio.findAll();
     }
 
-    @HystrixCommand(fallbackMethod = "metodoAlternativo") //deriva a otro metodo
+    //@HystrixCommand(fallbackMethod = "metodoAlternativo") //deriva a otro metodo
     @GetMapping("/listar/{id}/cantidad/{cantidad}")
     public Item item(@PathVariable Long id, @PathVariable Integer cantidad){
-        return itemServicio.findById(id, cantidad);
+        return cbFactory.create("items")
+            .run(() -> itemServicio.findById(id, cantidad), e -> metodoAlternativo(id, cantidad));
     }
 
     public Item metodoAlternativo(Long id, Integer cantidad){
