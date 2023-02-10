@@ -3,6 +3,8 @@ package com.laurasoto.springboot.app.item.springbootservicioitem.controladores;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Item;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Producto;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.servicio.ItemServicio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 public class ItemControlador {
+    private final Logger logger = LoggerFactory.getLogger(ItemControlador.class);
     @Autowired
     private CircuitBreakerFactory cbFactory;
     @Autowired
@@ -32,10 +35,11 @@ public class ItemControlador {
     @GetMapping("/listar/{id}/cantidad/{cantidad}")
     public Item item(@PathVariable Long id, @PathVariable Integer cantidad){
         return cbFactory.create("items")
-            .run(() -> itemServicio.findById(id, cantidad), e -> metodoAlternativo(id, cantidad));
+            .run(() -> itemServicio.findById(id, cantidad) , e -> metodoAlternativo(id, cantidad, e));
     }
 
-    public Item metodoAlternativo(Long id, Integer cantidad){
+    public Item metodoAlternativo(Long id, Integer cantidad, Throwable e){
+        logger.info(e.getMessage());
         Item item = new Item();
         Producto producto = new Producto();
 
