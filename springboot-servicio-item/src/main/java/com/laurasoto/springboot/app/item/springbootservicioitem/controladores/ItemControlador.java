@@ -3,6 +3,8 @@ package com.laurasoto.springboot.app.item.springbootservicioitem.controladores;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Item;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.Producto;
 import com.laurasoto.springboot.app.item.springbootservicioitem.modelos.servicio.ItemServicio;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,17 @@ public class ItemControlador {
         return itemServicio.findAll();
     }
 
-    //@HystrixCommand(fallbackMethod = "metodoAlternativo") //deriva a otro metodo
     @GetMapping("/listar/{id}/cantidad/{cantidad}")
     public Item item(@PathVariable Long id, @PathVariable Integer cantidad){
         return cbFactory.create("items")
             .run(() -> itemServicio.findById(id, cantidad) , e -> metodoAlternativo(id, cantidad, e));
+    }
+
+    @TimeLimiter(name="items", fallbackMethod = "metodoAlternativo")
+    @GetMapping("/listar2/{id}/cantidad/{cantidad}")
+    public Item item2(@PathVariable Long id, @PathVariable Integer cantidad){
+        return cbFactory.create("items")
+                .run(() -> itemServicio.findById(id, cantidad));
     }
 
     public Item metodoAlternativo(Long id, Integer cantidad, Throwable e){
