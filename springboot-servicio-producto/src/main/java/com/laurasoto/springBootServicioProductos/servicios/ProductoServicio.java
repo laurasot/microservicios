@@ -1,13 +1,15 @@
-package com.laurasoto.springBootServicioProductos.servicios;
+package com.laurasoto.springboot.app.servicioproductos.servicios;
 
 import java.util.List;
 
+import com.laurasoto.springboot.app.servicioproductos.repositorios.ProductoRepositorio;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.laurasoto.springBootServicioProductos.modelos.Producto;
-import com.laurasoto.springBootServicioProductos.repositorios.ProductoRepositorio;
+import com.laurasoto.springboot.app.commons.modelos.Producto;
+import org.springframework.transaction.annotation.Transactional;
+
 @AllArgsConstructor
 @Service
 
@@ -27,6 +29,18 @@ public class ProductoServicio implements IproductoServicio{
 	public Producto findById(Long id) {
 		// TODO Auto-generated method stub
 		return productoRepositorio.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public Producto save(Producto producto) {
+		return productoRepositorio.save(producto);
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		productoRepositorio.deleteById(id);
 	}
 
 }
