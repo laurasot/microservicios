@@ -1,5 +1,6 @@
 package com.laurasoto.springboot.app.oauth.servicios;
 
+import brave.Tracer;
 import com.laurasoto.springboot.app.oauth.clients.UsuarioFeignClient;
 import com.laurasoto.springboot.commons.usuarios.modelos.Usuario;
 import feign.FeignException;
@@ -21,7 +22,8 @@ public class UsuarioServicio implements IUsuarioServicio , UserDetailsService {
     private Logger logger = LoggerFactory.getLogger(UsuarioServicio.class);
 
     private final UsuarioFeignClient client;
-
+    @Autowired
+    private Tracer tracer;
     public UsuarioServicio(UsuarioFeignClient client){
         this.client = client;
     }
@@ -40,7 +42,9 @@ public class UsuarioServicio implements IUsuarioServicio , UserDetailsService {
                     true, true, true, authorities);
         }
         catch(FeignException e){
-             logger.error("Error en el login, no existe el usuario '"+username+"' en el sistema");
+            String error =  "Error en el login, no existe el usuario '"+username+"' en el sistema";
+             logger.error(error);
+             tracer.currentSpan().tag("error.mensaje", error + ": " + e.getMessage());
              throw new UsernameNotFoundException("Error en el login, no existe el usuario '\"+username+\"' en el sistema");
         }
     }

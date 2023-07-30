@@ -13,4 +13,5 @@ public class RepositoryConfig implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         config.exposeIdsFor(Usuario.class, Rol.class);
     }
+
 }

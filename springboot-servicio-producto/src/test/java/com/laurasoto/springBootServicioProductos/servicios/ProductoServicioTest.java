@@ -1,8 +1,8 @@
-package com.laurasoto.springboot.app.servicioproductos.servicios;
+package com.laurasoto.springBootServicioProductos.servicios;
 
 
+import com.laurasoto.springBootServicioProductos.repositorios.ProductoRepositorio;
 import com.laurasoto.springboot.app.commons.modelos.Producto;
-import com.laurasoto.springboot.app.servicioproductos.repositorios.ProductoRepositorio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

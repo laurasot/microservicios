@@ -1,4 +1,4 @@
-package com.laurasoto.springboot.app.servicioproductos;
+package com.laurasoto.springBootServicioProductos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

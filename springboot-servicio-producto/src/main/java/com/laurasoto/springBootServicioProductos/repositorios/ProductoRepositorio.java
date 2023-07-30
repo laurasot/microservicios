@@ -1,4 +1,4 @@
-package com.laurasoto.springboot.app.servicioproductos.repositorios;
+package com.laurasoto.springBootServicioProductos.repositorios;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

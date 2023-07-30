@@ -1,4 +1,4 @@
-package com.laurasoto.springboot.app.servicioproductos.servicios;
+package com.laurasoto.springBootServicioProductos.servicios;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package com.laurasoto.springboot.app.servicioproductos.servicios;
+package com.laurasoto.springBootServicioProductos.servicios;
 
 import java.util.List;
 
-import com.laurasoto.springboot.app.servicioproductos.repositorios.ProductoRepositorio;
+import com.laurasoto.springBootServicioProductos.repositorios.ProductoRepositorio;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

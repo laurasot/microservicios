@@ -1,10 +1,10 @@
-package com.laurasoto.springboot.app.servicioproductos.controladores;
+package com.laurasoto.springBootServicioProductos.controladores;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.laurasoto.springboot.app.servicioproductos.servicios.IproductoServicio;
+import com.laurasoto.springBootServicioProductos.servicios.IproductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
